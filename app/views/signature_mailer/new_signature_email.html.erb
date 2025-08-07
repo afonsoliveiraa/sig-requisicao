@@ -1,0 +1,9 @@
+<p>
+  Solicitação de <strong><%= @attest.operation %></strong>.
+  
+  # Combina os tokens de assinatura e atestado para montar a URL de acesso
+  <%= link_to "Acessar assinatura",
+      attest_accept_url(combined_tokens: "#{@attest.token}+#{@signature.signature_token}")
+  %>
+</p>
+<p> Atenciosamente,</p>
