@@ -9,4 +9,3 @@ class SignatureMailer < ApplicationMailer
     mail(to: @signature.email, subject: 'Você recebeu uma nova assinatura para validar')
   end
 end
-a

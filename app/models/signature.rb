@@ -2,7 +2,8 @@ class Signature < ApplicationRecord
   belongs_to :attest
 
   # Validações dos atributos da assinatura
-  validates :title, :cpf, :email, :name, :attest_id, presence: true
+  validates :title, :cpf, :email, :name, presence: true
+  validates :attest, presence: true
   validates :signature_token, presence: true, uniqueness: true
 
   before_validation :generate_token, on: :create
