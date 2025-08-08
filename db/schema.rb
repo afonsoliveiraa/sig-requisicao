@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_07_194357) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_08_211547) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,6 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_07_194357) do
     t.datetime "updated_at", null: false
     t.string "signature_token"
     t.string "status"
+    t.datetime "signed_at"
     t.index ["attest_id"], name: "index_signatures_on_attest_id"
   end
 

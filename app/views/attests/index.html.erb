@@ -95,7 +95,7 @@
 
     <% if @signature.status == 'CONFIRMADO' %>
       <div class="mt-5">
-        <p class="text-green-600 font-semibold">Assinatura Confirmada!</p>
+        <p class="text-green-600 font-semibold">Assinatura confirmada em <%= @signature.signed_at %></p>
       </div>
     <% end %>
 

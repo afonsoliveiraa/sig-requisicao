@@ -16,12 +16,13 @@ class AttestsController < ApplicationController
     end
 
     def response_attest
+        # Busca o atestado pelo token fornecido nos parâmetros
         token = params[:token]
         attest = Attest.find_by(token: token)
 
         if attest
             signatures_status = attest.signatures.map do |signature|
-                { name: signature.name, title: signature.title, status: signature.status }
+                { name: signature.name, title: signature.title, status: signature.status, signed_at: signature.signed_at }
             end
 
             all_confirmed = attest.signatures.all? { |signature| signature.status == 'CONFIRMADO' }
@@ -42,7 +43,7 @@ class AttestsController < ApplicationController
         end
     end
 
-
+    # Views 
     def index
         # Quebra os tokens combinados dos parâmetros da URL
         combined_tokens = params[:combined_tokens]
@@ -51,6 +52,12 @@ class AttestsController < ApplicationController
         # Localize os registros com base nos tokens separados e passa para index
         @attest = Attest.find_by(token: attest_token)
         @signature = Signature.find_by(signature_token: signature_token)        
+    end
+
+    # Método para alterar o email de uma assinatura e reenviar o link de assinatura
+    def attest_manage
+        token = params[:token]
+        @attest = Attest.find_by(token: token)
     end
     
 

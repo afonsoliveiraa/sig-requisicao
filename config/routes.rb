@@ -13,7 +13,10 @@ Rails.application.routes.draw do
 
   # Aceite via link único (GET /attest/:token)
   get 'attest/:combined_tokens', to: 'attests#index', as: :attest_accept
+  get 'attest/manage/:token', to: 'attests#attest_manage', as: :attest_manage
+
   # Atualização de assinatura (PATCH /signatures/update)
-  patch 'signatures/:id/update', to: 'signatures#update_status', as: :update_status_signature
+  patch 'signatures/:id/update_status', to: 'signatures#update_status', as: :update_status_signature
+  patch 'signatures/:id/update_email', to: 'signatures#update_email', as: :update_email_signature
 
 end

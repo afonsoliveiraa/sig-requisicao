@@ -11,6 +11,11 @@ class Signature < ApplicationRecord
   before_validation :set_default_status, on: :create  # novo callback
   after_create :send_new_signature_email
 
+  # Envia o email de notificação após a criação da assinatura
+  def send_new_signature_email
+    SignatureMailer.new_signature_email(self, attest).deliver_later
+  end
+
   private
 
   # Gera um token único para a assinatura
@@ -23,8 +28,4 @@ class Signature < ApplicationRecord
     self.status ||= 'PENDENTE'
   end
 
-  # Envia o email de notificação após a criação da assinatura
-  def send_new_signature_email
-    SignatureMailer.new_signature_email(self, attest).deliver_later
-  end
 end
