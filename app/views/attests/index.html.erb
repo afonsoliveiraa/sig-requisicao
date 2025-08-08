@@ -1,0 +1,151 @@
+<div class="flex items-center justify-center p-12">
+  <div class="mx-auto w-full max-w-[750px] bg-white p-6 rounded-lg shadow">
+
+    <!-- Dados do Attest -->
+    <div class="mb-5 grid grid-cols-2 gap-4">
+      <div>
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          Sistema
+        </label>
+        <input type="text" value="<%= @attest.system %>" readonly
+          class="w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                 text-base font-medium text-[#6B7280] outline-none" />
+      </div>
+
+      <div>
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          Entidade
+        </label>
+        <input type="text" value="<%= @attest.entity %>" readonly
+          class="w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                 text-base font-medium text-[#6B7280] outline-none" />
+      </div>
+    </div>
+
+    <div class="mb-5 grid grid-cols-2 gap-4">
+      <div>
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          Operação
+        </label>
+        <input type="text" value="<%= @attest.operation %>" readonly
+          class="w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                 text-base font-medium text-[#6B7280] outline-none" />
+      </div>
+    </div>
+
+    <!-- Formulário da Signature -->
+    <%= form_with model: @signature,
+                  url: update_status_signature_path(@signature),
+                  method: :patch,
+                  local: true,
+                  html: { id: "signature-form" } do |f| %>
+
+      <!-- Title -->
+      <div class="mb-5">
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          Título
+        </label>
+        <%= f.text_field :title, value: @signature.title, readonly: true,
+          class: "w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                  text-base font-medium text-[#6B7280] outline-none" %>
+      </div>
+
+      <!-- Nome -->
+      <div class="mb-5">
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          Nome
+        </label>
+        <%= f.text_field :name, value: @signature.name, readonly: true,
+          class: "w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                  text-base font-medium text-[#6B7280] outline-none" %>
+      </div>
+
+      <!-- CPF -->
+      <div class="mb-5">
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          CPF
+        </label>
+        <%= f.text_field :cpf, value: @signature.cpf, readonly: true,
+          class: "w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                  text-base font-medium text-[#6B7280] outline-none" %>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-5">
+        <label class="mb-3 block text-base font-medium text-[#07074D]">
+          Email
+        </label>
+        <%= f.email_field :email, value: @signature.email, readonly: true,
+          class: "w-full rounded-md border border-[#e0e0e0] bg-gray-100 py-3 px-6 
+                  text-base font-medium text-[#6B7280] outline-none" %>
+      </div>
+
+      <!-- Botão Assinar -->
+      <div>
+        <button type="submit"
+          <%= 'disabled' if @signature.status == 'CONFIRMADO' %>
+          class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 
+                 text-base font-semibold text-white outline-none
+                 <%= 'opacity-50 cursor-not-allowed' if @signature.status == 'CONFIRMADO' %>">
+          Assinar
+        </button>
+      </div>
+
+    <% end %>
+
+    <% if @signature.status == 'CONFIRMADO' %>
+      <div class="mt-5">
+        <p class="text-green-600 font-semibold">Assinatura Confirmada!</p>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<!-- Modal de confirmação -->
+<div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-lg p-6 max-w-sm w-full text-center shadow-lg">
+    <p class="mb-4 text-lg font-semibold">Deseja confirmar a assinatura?</p>
+    <div class="flex justify-center gap-4">
+      <button id="confirm-ok-btn" 
+        type="button"
+        class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none hover:bg-[#5a58d1]">
+        Confirmar
+      </button>
+      <button id="confirm-cancel-btn" 
+        type="button"
+        class="hover:shadow-form rounded-md bg-gray-400 py-3 px-8 text-base font-semibold text-white outline-none hover:bg-gray-500">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('signature-form');
+    const modal = document.getElementById('confirm-modal');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const okBtn = document.getElementById('confirm-ok-btn');
+    const cancelBtn = document.getElementById('confirm-cancel-btn');
+
+    form.addEventListener('submit', (event) => {
+      if (submitBtn.disabled) return; // botão desabilitado, deixa passar normal
+
+      event.preventDefault(); // cancela o submit para mostrar modal
+
+      // abre o modal
+      modal.classList.remove('hidden');
+    });
+
+    okBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      form.submit(); // envia o form programaticamente
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      modal.classList.add('hidden'); // fecha o modal sem enviar
+    });
+  });
+</script>
