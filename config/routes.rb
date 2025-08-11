@@ -18,5 +18,7 @@ Rails.application.routes.draw do
   # Atualização de assinatura (PATCH /signatures/update)
   patch 'signatures/:id/update_status', to: 'signatures#update_status', as: :update_status_signature
   patch 'signatures/:id/update_email', to: 'signatures#update_email', as: :update_email_signature
+  get 'signatures/:id/edit_email', to: 'signatures#edit_email', as: :edit_email_signature
+
 
 end

@@ -1,100 +1,104 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/riva-dashboard-tailwind/riva-dashboard.css">
 
-<div class="flex flex-wrap -mx-3 mb-5">
-  <div class="w-full max-w-full px-3 mb-6 mx-auto">
-    <div class="relative flex-[1_auto] flex flex-col break-words min-w-0 bg-clip-border rounded-[.95rem] bg-white m-5">
-      <div class="relative flex flex-col min-w-0 break-words border border-dashed bg-clip-border rounded-2xl border-stone-200 bg-light/30">
-        <div class="px-9 pt-5 flex justify-between items-stretch flex-wrap min-h-[70px] pb-0 bg-transparent">
-          <h3 class="flex flex-col items-start justify-center m-2 ml-0 font-medium text-xl/tight text-dark">
-            <span class="mr-3 font-semibold text-dark">Signatures for Attest #<%= @attest.id %></span>
-            <span class="mt-1 font-medium text-secondary-dark text-lg/normal">List of all signatures</span>
-          </h3>
-        </div>
-        <div class="flex-auto block py-8 pt-6 px-9">
-          <div class="overflow-x-auto">
-            <table class="w-full my-0 align-middle text-dark border-neutral-200">
-              <thead class="align-bottom">
-                <tr class="font-semibold text-[0.95rem] text-secondary-dark">
-                  <th class="pb-3 text-start min-w-[175px]">Name</th>
-                  <th class="pb-3 text-start min-w-[150px]">Email</th>
-                  <th class="pb-3 text-start min-w-[100px]">CPF</th>
-                  <th class="pb-3 text-start min-w-[150px]">Title</th>
-                  <th class="pb-3 text-start min-w-[175px]">Status</th>
-                  <th class="pb-3 text-start min-w-[175px]">Signed At</th>
-                  <th class="pb-3 text-end min-w-[100px]">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @attest.signatures.each do |signature| %>
-                  <tr class="border-b border-dashed last:border-b-0" id="signature-row-<%= signature.id %>">
-                    <td class="p-3 pl-0 font-medium"><%= signature.name %></td>
 
-                    <td class="p-3 pl-0" id="email-cell-<%= signature.id %>">
-                      <span id="email-display-<%= signature.id %>"><%= signature.email %></span>
 
-                      <%= form_with model: signature,
-                                    url: update_email_signature_path(signature),
-                                    method: :patch,
-                                    local: true,
-                                    html: { id: "edit-form-#{signature.id}", class: "hidden mt-2" } do |f| %>
-                        <div class="mb-3">
-                          <%= f.label :email, "Email", class: "block mb-1 font-medium text-[#07074D]" %>
-                          <%= f.email_field :email,
-                                            value: signature.email,
-                                            required: true,
-                                            class: "w-full rounded-md border border-[#e0e0e0] py-2 px-3 text-base outline-none" %>
-                        </div>
-                        <div>
-                          <%= f.submit "Salvar",
-                                       class: "mr-2 bg-primary text-white px-4 py-1 rounded hover:bg-primary-dark cursor-pointer" %>
-                          <button type="button" onclick="toggleEdit(<%= signature.id %>)"
-                                  class="text-gray-500 hover:text-gray-700">Cancelar</button>
-                        </div>
-                      <% end %>
-                    </td>
+<div class="container mx-auto px-4 mt-10">
+  <div class="mx-auto w-1/2">
+    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+      
+      <!-- Item do Attest -->
+      <li class="mb-10 ms-8">
+        <span class="absolute flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full -start-4 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+          <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5" />
+          </svg>
+        </span>
 
-                    <td class="p-3 pl-0"><%= signature.cpf %></td>
-                    <td class="p-3 pl-0"><%= signature.title %></td>
-                    <td class="p-3 pl-0"><%= signature.status %></td>
-                    <td class="p-3 pl-0"><%= signature.signed_at.present? ? signature.signed_at.strftime("%Y-%m-%d %H:%M") : "-" %></td>
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600">
+          <div class="items-start justify-between mb-3 sm:flex sm:justify-between">
+            <time class="mb-1 text-norml font-normal text-gray-400 sm:order-last sm:mb-0 w-[110px] text-right self-start">
+              <%= time_ago_in_words(@attest.created_at.in_time_zone("America/Sao_Paulo")) %>
+            </time>
+            <div class="text-normal font-normal text-gray-500 dark:text-gray-300 me-5">
+              Requisição de 
+              <span class="font-semibold text-gray-900 dark:text-white"><%= @attest.operation %></span> 
+              com token
+              <span class="bg-gray-100 text-gray-800 text-normal font-normal me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-600 dark:text-gray-300">
+                <%= @attest.token %>
+              </span>
+              criada com sucesso!
+            </div>
+          </div>
 
-                    <td class="p-3 text-end">
-                    <% if signature.status == 'PENDENTE' %>
-                      <button
-                        onclick="toggleEdit(<%= signature.id %>)"
-                        id="edit-btn-<%= signature.id %>"
-                        class="text-primary font-semibold hover:underline"
-                      >Editar</button>
-                    </td>
-                    <% else %>
-                      <span class="text-gray-500">N/A</span>    
-                    </td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+          <div class="p-3 text-sm italic font-normal text-gray-500 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-300">
+            '<%= @attest.message %>'
           </div>
         </div>
-      </div>
-    </div>
+      </li>
+
+      <!-- Lista de assinaturas -->
+      <% @attest.signatures.order(:created_at).each do |signature| %>
+        <li class="ms-8 mb-5">
+          <span class="absolute flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full -start-4 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m4.988 19.012 5.41-5.41m2.366-6.424 4.058 4.058-2.03 5.41L5.3 20 4 18.701l3.355-9.494 5.41-2.029Zm4.626 4.625L12.197 6.61 14.807 4 20 9.194l-2.61 2.61Z" />
+            </svg>
+          </span>
+
+          <%= turbo_frame_tag "email_edit_#{signature.id}" do %>
+            <div class="items-start justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-xs sm:flex sm:justify-between dark:bg-gray-700 dark:border-gray-600">
+              <time class="mb-1 text-norml font-normal text-gray-400 sm:order-last w-[140px] text-right self-start">
+                <%= time_ago_in_words(signature.created_at) %> 
+              </time>
+              <div class="text-normal font-normal text-gray-500 dark:text-gray-300 me-5">
+                <% if signature.status == 'PENDENTE' %>
+                  A assinatura de <%= signature.name %> enquanto <%= signature.title %>
+                  continua como
+                  <span class="text-orange-600"><%= signature.status %></span>. Se for necessário, você pode
+                  <%= link_to "Editar o email", 
+                    edit_email_signature_path(signature, turbo_frame: "email_edit_#{signature.id}"),
+                    class: "inline-flex items-center px-2 py-1 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded hover:bg-gray-100 hover:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700",
+                    data: { turbo_frame: "email_edit_#{signature.id}" } %>
+                de envio.
+                <% elsif signature.status == 'CONFIRMADO' %>
+                  A assinatura de <span><%= signature.name %></span> enquanto <%= signature.title %>
+                  foi
+                  <span class="text-green-600"><%= signature.status %></span>
+                  em <%= l(signature.signed_at, format: :long) %>.
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+
+      <!-- Todas assinaturas confirmadas -->
+      <% if @attest.signatures.all? { |s| s.status == 'CONFIRMADO' } %>
+        <li class="mt-10 ms-8">
+          <span class="absolute flex items-center justify-center w-8 h-8 bg-green-500 rounded-full -start-4 ring-8 ring-white">
+            <svg class="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </span>
+
+          
+        <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-xs dark:bg-gray-700 dark:border-gray-600">
+          <div class="items-start justify-between  sm:flex sm:justify-between">
+            <time class="mb-1 text-norml font-normal text-gray-400 sm:order-last sm:mb-0 w-[110px] text-right self-start">
+              <%= time_ago_in_words(@attest.created_at.in_time_zone("America/Sao_Paulo")) %>
+            </time>
+            <div class="text-normal font-normal text-gray-500 dark:text-gray-300 me-5">
+                Todas as assinaturas foram confirmadas com sucesso, processo apto para ser finalizado. 
+
+            </div>
+          </div>
+
+          </div>
+        </li>
+      <% end %>
+
+    </ol>
   </div>
 </div>
 
-<script>
-  function toggleEdit(id) {
-    const form = document.getElementById(`edit-form-${id}`);
-    const emailDisplay = document.getElementById(`email-display-${id}`);
-    const editBtn = document.getElementById(`edit-btn-${id}`);
+<%= render partial: 'shared/footer' %>
 
-    if (form.classList.contains('hidden')) {
-      form.classList.remove('hidden');
-      emailDisplay.style.display = 'none';
-      editBtn.style.display = 'none';
-    } else {
-      form.classList.add('hidden');
-      emailDisplay.style.display = 'inline';
-      editBtn.style.display = 'inline-block';
-    }
-  }
-</script>

@@ -65,3 +65,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'  # motor nativo para converter HTML em PDF

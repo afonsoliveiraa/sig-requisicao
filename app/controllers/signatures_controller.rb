@@ -1,5 +1,5 @@
 class SignaturesController < ApplicationController
-  before_action :set_signature, only: [:update_status, :update_email]
+  before_action :set_signature, only: [:update_status, :update_email, :edit_email]
 
   def update_status
     if @signature.update(status: "CONFIRMADO", signed_at: Time.current)
@@ -20,10 +20,14 @@ class SignaturesController < ApplicationController
       # Depois de atualizar o status, chama a rota index
       redirect_to attest_manage_path(token: @signature.attest.token)    
     else  
-      logger.debug @signature.errors.full_messages.inspect  # <- aqui
       render json: { errors: @signature.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  def edit_email
+    render partial: "signatures/form_email", locals: { signature: @signature, attest: @signature.attest }
+  end
+
 
   private
 

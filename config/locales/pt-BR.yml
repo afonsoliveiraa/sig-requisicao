@@ -1,0 +1,55 @@
+pt-BR:
+  datetime:
+    distance_in_words:
+      half_a_minute: "meio minuto"
+      less_than_x_seconds:
+        one:   "menos de 1 segundo"
+        other: "menos de %{count} segundos"
+      x_seconds:
+        one:   "1 segundo"
+        other: "%{count} segundos"
+      less_than_x_minutes:
+        one:   "- 1min"
+        other: "- %{count}min"
+      x_minutes:
+        one:   "1min"
+        other: "%{count}min"
+      about_x_hours:
+        one:   "1h"
+        other: "%{count}h"
+      x_days:
+        one:   "1dia"
+        other: "%{count}dias"
+      about_x_months:
+        one:   "1mês"
+        other: "%{count}meses"
+      x_months:
+        one:   "1mês"
+        other: "%{count}meses"
+      about_x_years:
+        one:   "1ano"
+        other: "%{count}anos"
+      over_x_years:
+        one:   "+ 1ano"
+        other: "+ %{count}anos"
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d de %B de %Y %H:%M:%S"
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d de %B de %Y às %H:%M:%S"
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d de %B de %Y"
+    day_names: [domingo, segunda-feira, terça-feira, quarta-feira, quinta-feira, sexta-feira, sábado]
+    abbr_day_names: [dom, seg, ter, qua, qui, sex, sáb]
+    month_names: [~, janeiro, fevereiro, março, abril, maio, junho, julho, agosto, setembro, outubro, novembro, dezembro]
+    abbr_month_names: [~, jan, fev, mar, abr, mai, jun, jul, ago, set, out, nov, dez]
