@@ -58,6 +58,8 @@ class AttestsController < ApplicationController
     def attest_manage
         token = params[:token]
         @attest = Attest.find_by(token: token)
+        @toast_message = params[:toast]
+
     end
     
 
