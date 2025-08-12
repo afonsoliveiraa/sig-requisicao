@@ -68,3 +68,7 @@ end
 
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'  # motor nativo para converter HTML em PDF
+
+gem "prawn"
+gem "prawn-templates"
+

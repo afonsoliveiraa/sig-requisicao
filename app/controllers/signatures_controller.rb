@@ -18,7 +18,7 @@ class SignaturesController < ApplicationController
       # Dispara o reenvio do email com o novo link de assinatura
       @signature.send_new_signature_email
       # Depois de atualizar o status, chama a rota index
-      flash[:notice] = "Email atualizado com sucesso!"
+      flash[:notice] = "Email enviado com sucesso!"
       redirect_to attest_manage_path(token: @signature.attest.token)    
     else  
       render json: { errors: @signature.errors.full_messages }, status: :unprocessable_entity
