@@ -72,3 +72,5 @@ gem 'wkhtmltopdf-binary'  # motor nativo para converter HTML em PDF
 gem "prawn"
 gem "prawn-templates"
 
+
+gem "devise", "~> 4.9"

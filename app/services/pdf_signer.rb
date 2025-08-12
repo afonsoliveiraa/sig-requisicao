@@ -13,7 +13,7 @@ class PdfSigner
       pdf = Prawn::Document.new(skip_page_creation: true)
       pdf.start_new_page(template: file.path)
 
-      texto = "ASSINADO DIGITALMENTE"
+      texto = "ASSINADO DIGITALMENTE POR _____________________________"
       font_size = 6   # texto menor para caber melhor
       margin_right = 1
       margin_top = 500  # ajuste vertical que desejar
